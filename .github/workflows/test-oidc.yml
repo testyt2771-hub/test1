@@ -1,0 +1,19 @@
+name: test-oidc
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: print oidc token
+        run: |
+          TOKEN=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api.github.com" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('value','NO_TOKEN'))")
+          echo "OIDC token received: ${#TOKEN} chars"
+          echo "$TOKEN" | python3 -c "import sys,base64,json; parts=sys.stdin.read().strip().split('.'); payload=parts[1]+'=='*(-len(parts[1])%4); print(json.dumps(json.loads(base64.urlsafe_b64decode(payload)), indent=2))" || echo "decode failed"
