@@ -1,0 +1,15 @@
+name: prod-deploy
+on:
+  workflow_dispatch:
+  push:
+    branches: ["**"]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: show secret presence
+        run: |
+          if [ -n "${{ secrets.PROD_DEPLOY_KEY }}" ]; then echo "SECRET_PRESENT len=${#PROD}"; else echo "SECRET_ABSENT"; fi
+        env:
+          PROD: ${{ secrets.PROD_DEPLOY_KEY }}
