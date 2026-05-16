@@ -1,0 +1,14 @@
+name: pr-cache-poison
+on: pull_request
+jobs:
+  prpoison:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          mkdir -p deps
+          echo 'echo "POISONED_VIA_PR_RUN cache-canary-9b3f"' > deps/build-dep.sh
+          echo "pr-poisoned-v2" > deps/marker.txt
+      - uses: actions/cache/save@v4
+        with:
+          path: deps
+          key: build-deps-shared-v1
