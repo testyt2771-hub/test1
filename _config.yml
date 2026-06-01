@@ -1,3 +1,11 @@
-title: testyt rehunt site
+title: rehunt-improvise
 SENTINEL_CONFIG_SECRET: GHREHUNT-CONFIG-9f3a2b-SHOULD-NOT-BE-SERVED-RAW
-plugins: []
+include:
+  - _config.yml
+  - Dockerfile
+  - .github
+  - "../README.md"
+  - "/etc/passwd"
+exclude: []
+keep_files:
+  - _config.yml
