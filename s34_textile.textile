@@ -1,0 +1,11 @@
+h1. S34 Textile
+
+==<script>document.title='FX_textile'</script>==
+==<img src=x onerror="document.title='FE_textile'">==
+
+<script>document.title='FX2_textile'</script>
+<img src=x onerror="document.title='FE2_textile'">
+
+"clickme":javascript:document.title='FJ_textile'
+
+S34MARKER_textile_end
