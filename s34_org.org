@@ -1,0 +1,14 @@
+* S34 Org
+
+#+BEGIN_EXPORT html
+<script>document.title='FX_org'</script>
+<img src=x onerror="document.title='FE_org'">
+#+END_EXPORT
+
+#+BEGIN_HTML
+<svg onload="document.title='FS_org'"></svg>
+#+END_HTML
+
+[[javascript:document.title='FJ_org'][link]]
+
+S34MARKER_org_end
