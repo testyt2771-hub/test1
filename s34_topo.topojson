@@ -1,0 +1,6 @@
+{"type":"Topology","objects":{"pts":{"type":"GeometryCollection","geometries":[
+  {"type":"Point","coordinates":[0,0],"properties":{
+     "name":"<img src=x onerror=\"document.title='FE_topojson'\">",
+     "desc":"<script>document.title='FX_topojson'</script>",
+     "marker":"S34MARKER_topojson_end"}}
+]}},"arcs":[]}
