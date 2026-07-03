@@ -1,0 +1,8 @@
+= S34 RDoc
+
+<script>document.title='FX_rdoc'</script>
+<img src=x onerror="document.title='FE_rdoc'">
+
+{clickme}[javascript:document.title='FJ_rdoc']
+
+S34MARKER_rdoc_end
