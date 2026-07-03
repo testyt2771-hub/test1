@@ -1,0 +1,17 @@
+=pod
+
+=head1 S34 POD
+
+=begin html
+
+<script>document.title='FX_pod'</script>
+<img src=x onerror="document.title='FE_pod'">
+<svg onload="document.title='FS_pod'"></svg>
+
+=end html
+
+L<clickme|javascript:document.title='FJ_pod'>
+
+S34MARKER_pod_end
+
+=cut
