@@ -1,0 +1,9 @@
+= S34 MediaWiki =
+
+<script>document.title='FX_mw'</script>
+<img src=x onerror="document.title='FE_mw'">
+<svg onload="document.title='FS_mw'"></svg>
+
+[javascript:document.title='FJ_mw' link]
+
+S34MARKER_mw_end
