@@ -1,0 +1,29 @@
+name: CI
+on:
+  workflow_dispatch:
+    inputs:
+      greeting:
+        description: 'Greeting to echo'
+        required: false
+        default: 'hello-env-build'
+      target:
+        description: 'Target name'
+        required: true
+        type: string
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print inputs
+        run: |
+          echo "greeting=${{ github.event.inputs.greeting }}"
+          echo "target=${{ github.event.inputs.target }}"
+          echo "actor=${{ github.actor }}"
+      - name: Emit annotations
+        run: |
+          echo "::notice title=EnvBuildNotice::env-builder notice annotation"
+          echo "::warning title=EnvBuildWarn::env-builder warning annotation"
+      - name: Token context (no secret print)
+        run: echo "token-present=${{ github.token != '' }}"
