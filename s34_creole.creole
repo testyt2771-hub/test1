@@ -1,0 +1,9 @@
+= S34 Creole
+
+<<html>><script>document.title='FX_creole'</script><</html>>
+<script>document.title='FX2_creole'</script>
+<img src=x onerror="document.title='FE_creole'">
+
+[[javascript:document.title='FJ_creole'|link]]
+
+S34MARKER_creole_end
