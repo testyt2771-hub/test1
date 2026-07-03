@@ -1,0 +1,16 @@
+= S34 AsciiDoc
+
+Passthrough inline: +++<script>document.title='FX_adoc'</script>+++
+Pass macro: pass:[<img src=x onerror="document.title='FE_adoc'">]
+
+++++
+<script>document.title='FX2_adoc'</script>
+<svg onload="document.title='FS_adoc'"></svg>
+<iframe src="javascript:document.title='FI_adoc'"></iframe>
+++++
+
+image::x[alt="a",onerror="document.title='FE2_adoc'"]
+
+link:javascript:document.title='FJ_adoc'[clickme]
+
+S34MARKER_adoc_end
