@@ -1,0 +1,9 @@
+{"type":"FeatureCollection","features":[
+ {"type":"Feature","properties":{
+     "name":"<img src=x onerror=\"document.title='FE_geojson'\">",
+     "desc":"<script>document.title='FX_geojson'</script>",
+     "svg":"<svg onload=\"document.title='FS_geojson'\"></svg>",
+     "js":"<a href=\"javascript:document.title='FJ_geojson'\">c</a>",
+     "marker":"S34MARKER_geojson_end"},
+  "geometry":{"type":"Point","coordinates":[0,0]}}
+]}
